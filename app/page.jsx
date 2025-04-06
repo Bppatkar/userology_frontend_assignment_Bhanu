@@ -1,11 +1,11 @@
-import React from 'react'
+import WeatherCard from "./components/WeatherCard";
+import CryptoCard from "./components/CryptoCard";
 
-const page = () => {
+export default function Dashboard() {
   return (
-    <div>
-      <h1 className='font-bold text-red-500 text-3xl'>Welcome to next js</h1>
+    <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <WeatherCard />
+      <CryptoCard />
     </div>
-  )
+  );
 }
-
-export default page
