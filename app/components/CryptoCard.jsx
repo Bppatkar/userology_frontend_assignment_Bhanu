@@ -1,4 +1,3 @@
-// components/CryptoCard.jsx
 "use client";
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,26 +14,20 @@ export default function CryptoCard() {
     dispatch(fetchCrypto());
   }, [dispatch]);
 
-  if (!isClient) return <Skeleton type="crypto" />;
+  if (!isClient || status === 'loading') return <Skeleton type="crypto" />;
 
   return (
-    <div className="card">
-      <h2>Crypto Prices</h2>
-      <div className="grid grid-cols-2 gap-4">
-        <CryptoItem coin="Bitcoin" price={data.bitcoin?.usd} status={status} />
-        <CryptoItem coin="Ethereum" price={data.ethereum?.usd} status={status} />
+    <div className="bg-gray-900 p-6 rounded-xl shadow-lg border border-gray-700">
+      <h2 className="text-xl font-semibold mb-4">💰 Crypto Prices</h2>
+      <div className="space-y-2">
+      {Object.entries(data).map(([coinId, coinData]) => (
+  <div key={coinId} className="flex justify-between items-center">
+    <span className="capitalize">{coinId}</span>
+    <span>${coinData.usd.toLocaleString()}</span>
+  </div>
+))}
+
       </div>
     </div>
   );
 }
-
-const CryptoItem = ({ coin, price, status }) => (
-  <div>
-    <h3>{coin}</h3>
-    {status === 'loading' ? (
-      <div className="h-6 w-20 bg-gray-200 rounded animate-pulse" />
-    ) : (
-      <p>${price?.toLocaleString() || '--'}</p>
-    )}
-  </div>
-);

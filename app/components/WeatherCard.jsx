@@ -23,10 +23,10 @@ export default function WeatherCard() {
   if (status === "failed") return <p>Error fetching weather data</p>;
 
   return (
-    <div className="p-4 border rounded-lg shadow-md">
-      <h2 className="text-xl font-bold">{data.name}</h2>
-      <p>Temperature: {data.main?.temp}°C</p>
-      <p>Humidity: {data.main?.humidity}%</p>
-    </div>
+    <div className="bg-gray-900 p-6 rounded-xl shadow-lg border border-gray-700">
+    <h2 className="text-xl font-semibold mb-2">🌤️ Weather - {data?.name}</h2>
+    <p className="text-gray-300">Temperature: {(data?.main?.temp - 273.15).toFixed(2)}°C</p>
+    <p className="text-gray-400">Humidity: {data?.main?.humidity}%</p>
+  </div>
   );
 }

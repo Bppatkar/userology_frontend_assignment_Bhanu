@@ -6,12 +6,13 @@ export const metadata = {
   description: "Userology Frontend Assignment [Crypto-Weather-Nexus]",
 };
 
-// This part remains a server component
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <Providers>{children}</Providers>
+        <div className="bg-[#0f172a] text-white font-sans min-h-screen">
+          <Providers>{children}</Providers>
+        </div>
       </body>
     </html>
   );
