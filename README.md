@@ -37,29 +37,44 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 
 
-
+``` readme.md
 app/
-├── bitcoin/
-│   └── page.jsx            # Detail page for Bitcoin
-├── ethereum/
-│   └── page.jsx            # Detail page for Ethereum
-├── cardano/
-│   └── page.jsx            # Detail page for Cardano
-├── new-york/
-│   └── page.jsx            # Detail page for New York weather
-├── london/
-│   └── page.jsx            # Detail page for London weather
-├── tokyo/
-│   └── page.jsx            # Detail page for Tokyo weather
-├── components/
-│   ├── CryptoDetail.jsx     # Crypto detail component (reusable)
-│   └── WeatherDetail.jsx    # Weather detail component (reusable)
-├── api/
+├
 │   ├── crypto/
-│   │   ├── route.js         # Crypto list API
-│   │   └── [coinId]/
-│   │       └── route.js     # Crypto detail API
-│   └── weather/
-│       ├── route.js         # Weather list API
-│       └── [city]/
-│           └── route.js     # Weather detail API
+│   │   ├── route.js              <-- GET all crypto data
+│   │   └── [coinid]/
+│   │       └── route.js       <-- GET specific coin data (API only)
+│   ├── weather/
+│   │   ├── route.js
+│   │   └── [cityid]/
+│   │       └── route.js
+│   └── news/
+│       └── route.js
+│
+├ 
+│
+├── hooks/
+│   └── useFavorite.jsx
+│
+├── components/
+│   ├── CryptoCard.jsx
+│   ├── CryptoDetail.jsx
+│   ├── FavoritesSection.jsx
+│   ├── NewsCard.jsx
+│   ├── NewsSection.jsx
+│   ├── Skeleton.jsx
+│   ├── WeatherCard.jsx
+│   ├── WeatherSection.jsx
+│   └── Header.jsx / Footer.jsx (if any)
+│
+├── store/
+│   ├── cryptoSlice.js
+│   ├── favoritesSlice.js
+│   ├── index.js
+│   ├── newsSlice.js
+│   └── weatherSlice.js
+│
+├── page.jsx                   <-- Homepage
+├── layout.jsx                 <-- Root layout
+├── providers.jsx              <-- Redux Provider & ThemeContext etc.
+```

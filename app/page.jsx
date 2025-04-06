@@ -48,7 +48,7 @@ export default function DashboardPage() {
       </main>
       
       <footer className="text-center mt-10 text-sm text-indigo-400">
-        © 2025 CryptoWeather Nexus. All rights reserved.
+        © 2025 CryptoWeather Nexus Bhanu Pratap Patkar. All rights reserved.
       </footer>
     </div>
   );

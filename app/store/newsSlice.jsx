@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 export const fetchNews = createAsyncThunk('news/fetchNews', async () => {
-  const res = await fetch('/api/news');
+  const res = await fetch('/news');
   const data = await res.json();
   return data; // Use the exact API response structure
 });
