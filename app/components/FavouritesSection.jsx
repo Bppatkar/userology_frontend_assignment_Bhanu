@@ -13,7 +13,7 @@ export default function FavoritesSection({ cryptoData, weatherData }) {
       <h2 className="text-xl font-semibold mb-4">⭐ Favorites</h2>
       
       {cryptoFavorites.length === 0 && weatherFavorites.length === 0 ? (
-        <p className="text-gray-400">No favorites yet. Click the ♡ icon to add some!</p>
+        <p className="text-gray-400">No favorites yet. Click the ⭐ icon to add some!</p>
       ) : (
         <div className="space-y-6">
           {favoriteCryptos.length > 0 && (

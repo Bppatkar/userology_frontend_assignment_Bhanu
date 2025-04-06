@@ -1,9 +1,9 @@
 "use client";
-import { useRouter } from 'next/navigation';
-import { StarIcon } from '@heroicons/react/24/solid';
-import { useSelector, useDispatch } from 'react-redux';
-import { toggleCryptoFavorite } from '@/store/favoritesSlice';
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { StarIcon } from "@heroicons/react/24/solid";
+import { useSelector, useDispatch } from "react-redux";
+import { toggleCryptoFavorite } from "@/store/favoritesSlice";
 
 export default function CryptoDetail({ params }) {
   const router = useRouter();
@@ -12,43 +12,58 @@ export default function CryptoDetail({ params }) {
   const isFavorite = cryptoFavorites.includes(params.coinId);
   const [coin, setCoin] = useState(null);
   const [loading, setLoading] = useState(true);
-  
+  const [error, setError] = useState(null);
+
   useEffect(() => {
     const fetchCoinData = async () => {
       try {
+        setLoading(true);
+        setError(null);
+
         const response = await fetch(`/api/crypto/${params.coinId}`);
-        if (!response.ok) throw new Error('Failed to fetch');
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "Failed to fetch coin data");
+        }
+
         const data = await response.json();
         setCoin(data);
-      } catch (error) {
-        console.error(error);
-        router.push('/error');
+      } catch (err) {
+        setError(err.message);
+        console.error("Fetch error:", err);
       } finally {
         setLoading(false);
       }
     };
 
     fetchCoinData();
-  }, [params.coinId, router]);
+  }, [params.coinId]);
 
-  if (loading) return <div>Loading...</div>;
-  if (!coin) return <div>Coin not found</div>;
+  if (loading)
+    return <div className="p-6 text-center">Loading coin data...</div>;
+  if (error) return <div className="p-6 text-red-500">Error: {error}</div>;
+  if (!coin) return <div className="p-6">Coin not found</div>;
 
   return (
     <div className="min-h-screen bg-gray-900 p-6">
       <div className="max-w-4xl mx-auto bg-gray-800 rounded-xl p-6 border border-gray-700">
         <div className="flex justify-between items-start mb-6">
-          <button 
+          <button
             onClick={() => router.back()}
             className="text-blue-400 hover:underline flex items-center gap-1"
           >
             ← Back to Dashboard
           </button>
-          <button 
+          <button
             onClick={() => dispatch(toggleCryptoFavorite(params.coinId))}
             className="p-2 rounded-full bg-gray-700 hover:bg-gray-600 transition-colors"
           >
-            <StarIcon className={`h-6 w-6 ${isFavorite ? 'text-yellow-400 fill-yellow-400' : 'text-gray-400'}`} />
+            <StarIcon
+              className={`h-6 w-6 ${
+                isFavorite ? "text-yellow-400 fill-yellow-400" : "text-gray-400"
+              }`}
+            />
           </button>
         </div>
 
@@ -57,7 +72,9 @@ export default function CryptoDetail({ params }) {
             <img src={coin.image} alt={coin.name} className="w-16 h-16" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold">{coin.name} ({coin.symbol.toUpperCase()})</h1>
+            <h1 className="text-3xl font-bold">
+              {coin.name} ({coin.symbol.toUpperCase()})
+            </h1>
             <p className="text-gray-400 mt-2">{coin.description}</p>
           </div>
         </div>
@@ -68,17 +85,31 @@ export default function CryptoDetail({ params }) {
             <div className="space-y-4">
               <div className="flex justify-between items-center">
                 <span className="text-gray-400">Current Price</span>
-                <span className="text-2xl font-bold">${coin.current_price.toLocaleString()}</span>
+                <span className="text-2xl font-bold">
+                  ${coin.current_price.toLocaleString()}
+                </span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-gray-400">24h Change</span>
-                <span className={`text-lg ${coin.price_change_percentage_24h >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                <span
+                  className={`text-lg ${
+                    coin.price_change_percentage_24h >= 0
+                      ? "text-green-500"
+                      : "text-red-500"
+                  }`}
+                >
                   {coin.price_change_percentage_24h.toFixed(2)}%
                 </span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-gray-400">7d Change</span>
-                <span className={`text-lg ${coin.price_change_percentage_7d >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                <span
+                  className={`text-lg ${
+                    coin.price_change_percentage_7d >= 0
+                      ? "text-green-500"
+                      : "text-red-500"
+                  }`}
+                >
                   {coin.price_change_percentage_7d.toFixed(2)}%
                 </span>
               </div>

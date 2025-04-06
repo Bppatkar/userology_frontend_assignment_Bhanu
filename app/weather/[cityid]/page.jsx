@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { StarIcon } from '@heroicons/react/24/solid';
 import { useSelector, useDispatch } from 'react-redux';
@@ -9,26 +10,39 @@ export default function WeatherDetail({ params }) {
   const dispatch = useDispatch();
   const weatherFavorites = useSelector((state) => state.favorites.weather);
   const isFavorite = weatherFavorites.includes(params.cityId);
+  const [weather, setWeather] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Mock data - replace with API call using params.cityId
-  const city = {
-    id: params.cityId,
-    name: "New York",
-    current_temp: "11°C",
-    feels_like: "9°C",
-    condition: "Rain",
-    humidity: "87%",
-    wind: "15 km/h",
-    pressure: "1012 hPa",
-    visibility: "10 km",
-    forecast: [
-      { day: "Today", high: "12°C", low: "8°C", condition: "Rain", icon: "🌧️" },
-      { day: "Tue", high: "10°C", low: "6°C", condition: "Showers", icon: "🌦️" },
-      { day: "Wed", high: "9°C", low: "5°C", condition: "Cloudy", icon: "☁️" },
-      { day: "Thu", high: "11°C", low: "7°C", condition: "Partly Cloudy", icon: "⛅" },
-      { day: "Fri", high: "13°C", low: "9°C", condition: "Sunny", icon: "☀️" }
-    ]
-  };
+  useEffect(() => {
+    const fetchWeatherData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const response = await fetch(`/api/weather/${params.cityId}`);
+        
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to fetch weather data');
+        }
+
+        const data = await response.json();
+        setWeather(data);
+      } catch (err) {
+        setError(err.message);
+        console.error('Fetch error:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchWeatherData();
+  }, [params.cityId]);
+
+  if (loading) return <div className="p-6 text-center">Loading weather data...</div>;
+  if (error) return <div className="p-6 text-red-500">Error: {error}</div>;
+  if (!weather) return <div className="p-6">Weather data not available</div>;
 
   return (
     <div className="min-h-screen bg-gray-900 p-6">

@@ -35,23 +35,21 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details
 
-
-
-``` readme.md
+```readme.md
 app/
 ├
 │   ├── crypto/
 │   │   ├── route.js              <-- GET all crypto data
-│   │   └── [coinid]/
+│   │   └── [coinId]/
 │   │       └── route.js       <-- GET specific coin data (API only)
 │   ├── weather/
 │   │   ├── route.js
-│   │   └── [cityid]/
+│   │   └── [cityId]/
 │   │       └── route.js
 │   └── news/
 │       └── route.js
 │
-├ 
+├
 │
 ├── hooks/
 │   └── useFavorite.jsx

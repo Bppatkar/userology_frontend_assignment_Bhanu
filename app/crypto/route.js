@@ -5,32 +5,44 @@ export const dynamic = 'force-static';
 
 export async function GET() {
   try {
-    const apiKey = process.env.NEXT_PUBLIC_CRYPTO_API_KEY;
-    if (!apiKey) {
-      return NextResponse.json(
-        { error: "API key not configured" },
-        { status: 500 }
-      );
-    }
-    const response = await fetch(
-      `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,cardano&order=market_cap_desc&per_page=100&page=1&sparkline=false&locale=en`,
+    const apiKey = process.env.NEXT_PUBLIC_CRYPTO_API_KEY; 
+    
+    
+    const listingsResponse = await fetch(
+      `https://api.coingecko.com/api/v3/coins/list`,
       {
         headers: {
-          'x-cg-demo-api-key': apiKey // Better to use headers than query params for API keys
-        },
-        next: { revalidate: 600 } // ISR caching
+          'x-cg-demo-api-key': apiKey
+        }
       }
     );
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData?.error || 'Failed to fetch crypto data');
+    if (!listingsResponse.ok) {
+      throw new Error('Failed to fetch cryptocurrency listings');
     }
 
-    const data = await response.json();
+    const allCoins = await listingsResponse.json();
+
     
+    const marketsResponse = await fetch(
+      `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false`,
+      {
+        headers: {
+          'x-cg-demo-api-key': apiKey
+        },
+        next: { revalidate: 600 }
+      }
+    );
+
+    if (!marketsResponse.ok) {
+      const errorData = await marketsResponse.json();
+      throw new Error(errorData?.error || 'Failed to fetch crypto market data');
+    }
+
+    const marketData = await marketsResponse.json();
+
     // Transform to match our frontend needs
-    const formattedData = data.map(coin => ({
+    const formattedData = marketData.map(coin => ({
       id: coin.id,
       name: coin.name,
       symbol: coin.symbol,
@@ -38,7 +50,7 @@ export async function GET() {
       price_change_percentage_24h: coin.price_change_percentage_24h,
       market_cap: coin.market_cap,
       image: coin.image,
-      sparkline: coin.sparkline_in_7d?.price // Added sparkline data if available
+      sparkline: coin.sparkline_in_7d?.price
     }));
 
     return NextResponse.json(formattedData, {
@@ -51,7 +63,7 @@ export async function GET() {
     return NextResponse.json(
       { 
         error: error.message,
-        retryAfter: 60 // Suggested retry time in seconds
+        retryAfter: 60
       },
       { status: 500 }
     );
