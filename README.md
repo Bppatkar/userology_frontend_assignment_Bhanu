@@ -33,4 +33,33 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details
+
+
+
+
+app/
+├── bitcoin/
+│   └── page.jsx            # Detail page for Bitcoin
+├── ethereum/
+│   └── page.jsx            # Detail page for Ethereum
+├── cardano/
+│   └── page.jsx            # Detail page for Cardano
+├── new-york/
+│   └── page.jsx            # Detail page for New York weather
+├── london/
+│   └── page.jsx            # Detail page for London weather
+├── tokyo/
+│   └── page.jsx            # Detail page for Tokyo weather
+├── components/
+│   ├── CryptoDetail.jsx     # Crypto detail component (reusable)
+│   └── WeatherDetail.jsx    # Weather detail component (reusable)
+├── api/
+│   ├── crypto/
+│   │   ├── route.js         # Crypto list API
+│   │   └── [coinId]/
+│   │       └── route.js     # Crypto detail API
+│   └── weather/
+│       ├── route.js         # Weather list API
+│       └── [city]/
+│           └── route.js     # Weather detail API
