@@ -26,7 +26,8 @@ const weatherData = [
   { id: "singapore", name: "Singapore", temp: "28°C", condition: "Thunderstorm", humidity: "80%" }
 ];
 
-export default function Dashboard() {
+
+export default function DashboardPage() {
   return (
     <div className="min-h-screen p-6 bg-gradient-to-r from-indigo-900 via-indigo-800 to-indigo-900">
       <header className="text-center py-6">
